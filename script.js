@@ -1,14 +1,21 @@
 //SELECCIONAR LA ETIQUETA MAIN DE MI HTML...
 const main = document.getElementsByTagName("main").item(0);
 
+//SELECCIONAR ulMenu...
+const ulMenu = document.getElementById("menu");
+
 //URL DE API - DE AQUI CONSUMO MIS PRODCUTOS, MI INFORMACION...
 const URLMain = "https://fakestoreapi.com/products/";
 
 
+
+
+
+
 //FUNCION PARA OBTENER DATOS DESDE LA API...
-function getData(){
+function getData(categoria){
     const options = {"method":"GET"};
-    fetch(URLMain,options)
+    fetch(URLMain+categoria,options)
     .then((response)=>{
         console.log(response);
         response.json().then((res)=>{
@@ -23,8 +30,31 @@ function getData(){
 }
 
 
+
+
+//FUNCION PARA OBTENER DATOS DESDE LA API - categorias...
+function getCategories(){
+
+    const options = {"method":"GET"};
+    fetch(URLMain+"categories",options)
+    .then((response)=>{
+        console.log(response);
+        response.json().then((res)=>{
+            //console.log(res.length);
+            //console.log(res[16].title);
+            createCategories(res);
+        });
+    })
+    .catch((err) => {
+        main.insertAdjacentHTML("beforeend",`<div class="alert alert-danger" role="alert">${err.message}</div>`)
+    });
+}
+
+
+
 //FUNCION QUE GENERA LOS CARDS CON LA INFORMACION...
 function createCards(productos){
+    main.innerHTML = "";
     productos.forEach(producto => {
         main.insertAdjacentHTML("beforeend",
             `
@@ -43,7 +73,22 @@ function createCards(productos){
 }
 
 
+//FUNCION QUE GENERA CATEGORIAS...
+function createCategories(categorias){
+
+    categorias.forEach(categoria => {
+       
+        ulMenu.insertAdjacentHTML("afterbegin",
+            `
+            <li><a class="dropdown-item" href="#" onclick="getData('category/${categoria}');">${categoria}</a></li>
+           
+            `);
+    });
+}
 
 
 
-getData();
+
+
+getData('');
+getCategories();
