@@ -80,7 +80,7 @@ function createCategories(categorias){
        
         ulMenu.insertAdjacentHTML("afterbegin",
             `
-            <li><a class="dropdown-item" href="#" onclick="getData('category/${categoria}');">${categoria}</a></li>
+            <li><a class="dropdown-item" href="#" onclick="getData('category/${escape(categoria)}');">${categoria}</a></li>
            
             `);
     });
